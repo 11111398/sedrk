@@ -1,0 +1,252 @@
+#include <iostream>
+#include <cstdio>
+#include <random>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <iomanip>
+#include "Header.h"
+using namespace std;
+
+//int RoundNumber()
+//{
+//    int Number = 0;
+//    do
+//    {
+//        cout << "How Many Round 1 To 10 ?" << endl;
+//        cin >> Number;
+//    } while (Number < 0);
+//    return Number;
+//}
+//
+//enum eSelect { Stone = 1, Paper = 2, Scissors = 3 };
+//
+//int RandomNumber(eSelect From, eSelect To)
+//{ 
+//    int randNum = rand() % (To - From + 1) + From;
+//    return randNum;
+//}
+//
+//string Select()
+//{
+//    int T = RoundNumber();
+//    int Number = 0;
+//    int Number1 = 0;
+//    for (int i = 1;i <= T;i++)
+//    {
+//        cout << "\nRound [" << i << "] begins :\n";
+//        cout << "Your choice: [1]:Stone, [2]:Paper, [3]:Scissors ?\n";
+//        cin >> Number;
+//       // cout << "\n";
+//        //Number1 = RandomNumber(eSelect::Stone,eSelect::Scissors);
+//        cin >> Number1;
+//       // cout << Number1 <<"\n";
+//        if (Number == eSelect::Paper && Number1 == eSelect::Scissors)
+//        {
+//            cout << "You lost! Scissors beats Paper.\n";
+//        }
+//        else if (Number == eSelect::Scissors && Number1 == eSelect::Stone)
+//        {
+//            cout << "You lost! Scissors beats Paper.\n";
+//        }
+//        else if (Number == eSelect::Stone && Number1 == eSelect::Scissors)
+//        {
+//            cout << "You won! Scissors beats Paper.\n";
+//            system("color 2F");
+//            cout << "\a";
+//        }
+//        else if (Number == eSelect::Scissors && Number1 == eSelect::Paper)
+//        {
+//            cout << "You won! Scissors beats Paper.\n";
+//            system("color 2F");
+//            cout << "\a";
+//        }
+//        else if (Number == eSelect::Stone && Number1 == eSelect::Paper)
+//        {
+//            cout << "You lost! Paper beats Stone.\n";
+//        }
+//        else if (Number == eSelect::Paper && Number1 == eSelect::Stone)
+//        {
+//            cout << "You won! Paper beats Stone.\n";
+//            system("color 2F");
+//            cout << "\a";
+//        }
+//        else if (Number == Number1)
+//        {
+//            cout << "It's a tie!\n";
+//        }
+//        else
+//        {
+//            cout << "Error: Invalid input.\n";
+//        }
+//    }
+//    return "Game over\n";
+//}
+int RandomNumber(int From, int To)
+{
+    //Function to generate a random number 
+    int randNum = rand() % (To - From + 1) + From;
+    return randNum;
+}
+
+const string ClientsFileName = "Client.text";
+
+
+struct sClient
+{
+    string AccountNumber;
+    string PinCode;
+    string Name;
+    string Phone;
+    string AccountBalance;
+};
+
+
+vector<string> SplitString(string S1, string Delim)
+{
+    vector<string> vString;
+    short pos = 0;
+    string sWord; // define a string variable
+    // use find() function to get the position of the delimiters
+    while ((pos = S1.find(Delim)) != std::string::npos)
+    {
+        sWord = S1.substr(0, pos); // store the word
+        if (sWord != "")
+        {
+            vString.push_back(sWord);
+        }
+        S1.erase(0, pos + Delim.length());
+    }
+    if (S1 != "")
+    {
+        vString.push_back(S1); // it adds last word of the string.
+    }
+    return vString;
+}
+
+sClient ConvrtLineToRecordes(string Line,string Seperator = "#//#")
+{
+    vector <string> VClient;
+    sClient Client;
+    VClient = SplitString(Line, Seperator);
+
+    Client.AccountNumber = VClient[0];
+    Client.PinCode = VClient[1];
+    Client.Name = VClient[2];
+    Client.Phone = VClient[3];
+    Client.AccountBalance= VClient[4];
+
+    return Client;
+}
+
+vector <sClient> LoadClientDateFromFile(string FileName)
+{
+    vector <sClient> vClient;
+    fstream MyFile;
+    MyFile.open(FileName, ios::in);
+
+        if (MyFile.is_open())
+        {
+            string Line;
+            sClient Client;
+            cout << Line <<endl;
+
+            while (getline(MyFile, Line))
+            {
+                Client = ConvrtLineToRecordes(Line);
+
+                    vClient.push_back(Client);
+            }
+            MyFile.close();
+        }
+        return vClient;
+}
+
+void PrintClientRecord(sClient Client)
+{
+    cout << "| " << setw(15) << left << Client.AccountNumber;
+    cout << "| " << setw(10) << left << Client.PinCode;
+    cout << "| " << setw(40) << left << Client.Name;
+    cout << "| " << setw(12) << left << Client.Phone;
+    cout << "| " << setw(12) << left << Client.AccountBalance;
+}
+
+
+void PrintAllClientsData(vector <sClient> vClients)
+{
+    cout << "\n\t\t\t\t\tClient List (" << vClients.size() << ") Client(s).";
+        cout << "\n_______________________________________________________";
+    cout << "_________________________________________\n" << endl;
+    cout << "| " << left << setw(15) << "Accout Number";
+    cout << "| " << left << setw(10) << "Pin Code";
+    cout << "| " << left << setw(40) << "Client Name";
+    cout << "| " << left << setw(12) << "Phone";
+    cout << "| " << left << setw(12) << "Balance";
+    cout <<"\n_______________________________________________________";
+    cout << "_________________________________________\n" << endl;
+    for (sClient Client : vClients)
+    {
+        PrintClientRecord(Client);
+        cout << endl;
+    }
+    cout << "\n_______________________________________________________";
+    cout << "_________________________________________\n" << endl;
+
+
+}
+
+
+
+
+
+sClient ReadNew()
+{
+    sClient Client;
+
+    cout << "Enter Account Number ?";
+    getline(cin >> ws,Client.AccountNumber);
+
+    cout << "Enter PinCode ?";
+    getline(cin, Client.PinCode);
+
+    cout << "Enter Name?";
+    getline(cin, Client.Name);
+
+    cout << "Enter Phone?";
+    getline(cin, Client.Phone);
+
+    cout << "Enter Account Balance?";
+    getline(cin, Client.AccountBalance);
+
+    return Client;
+}
+
+
+
+
+int main()
+{
+    srand((unsigned)time(NULL));
+
+    vector <sClient> vClient = LoadClientDateFromFile(ClientsFileName);
+
+    PrintAllClientsData(vClient);
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    system("pause>0");
+    return 0;
+}
+
+
