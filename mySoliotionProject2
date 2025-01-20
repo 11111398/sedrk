@@ -1,0 +1,218 @@
+#include <iostream>
+#include<cstdlib>
+using namespace std;
+
+
+int Random(int From, int To)
+{
+	int RandNumber;
+	RandNumber = rand() % (To - From + 1) + From;
+	return RandNumber;
+}
+
+enum enLevel {Easy = 1, Medium = 2, Hard = 3, Mix = 4};
+
+struct Quastion
+{
+	enLevel Easy;
+	enLevel Medium;
+	enLevel Hard;
+	enLevel Mix;
+
+};
+
+
+int HowManyQustionWantAnswer()
+{
+	int Qostion;
+	cout << "HowOustionWantAnswer\n";
+	cin >> Qostion;
+	return Qostion;
+}
+
+
+string TypeOperetion(short Type)
+{
+	switch (Type)
+	{
+	case enLevel::Easy:
+		return "+";
+	case enLevel::Medium:
+		return "*";
+	case enLevel::Hard:
+		return "/";
+	//case enLevel::Mix:
+	
+
+	}
+}
+
+void Print(short T,float x, float y, float q, float Answer)
+{
+	cout << "x = " << x <<endl;
+	 cout <<  TypeOperetion(T) <<endl;
+	cout << "y = " << y << endl;
+}
+
+int AddE(short T,short& x, short& y, short& q,short& Answer)
+{
+	 
+		x = Random(1, 100);
+		y = Random(1, 100);
+		q = x + y;
+		 
+		Print(T,x, y, q, Answer);
+	return q;
+}
+
+int Add(short T, short& x, short& y, short& q, short& Answer)
+{
+
+	x = Random(1, 1000);
+	y = Random(1, 1000);
+	q = x + y;
+
+	Print(T,x, y, q, Answer);
+	return q;
+}
+
+
+
+
+int Multiplay(short T, short& x, short& y, float& q, short& Answer)
+{
+	x = Random(1, 1000);
+	y = Random(1, 1000);
+	q = x * y;
+
+	Print(T, x, y, q, Answer);
+	return q;
+
+}
+
+float Divid(short T, float& x, float& y, float& q, float& Answer)
+{
+	x = Random(1, 1000);
+	y = Random(1, 1000);
+	q = x / y;
+
+	Print(T,x, y, q, Answer);
+	return q;
+
+}
+
+
+void CheckDivid(float x, float y, float q, float Answer)
+{
+	int T;
+	cin >> T;
+	Divid(T,x, y, q, Answer);
+	cout << "Pleas Enter Answer :\n";
+	cin >> Answer;
+
+	if (q == Answer)
+	{
+		cout << "Answer Corectly -)\n";
+	}
+	else
+	{
+		cout << "Answer Not Corectly -(\n";
+		cout << "Answer Corectly  = " << q << "\n";
+
+	}
+}
+
+
+void CheckAddE(short x, short y, short q, short Answer)
+{
+	int T;
+	cin >> T;
+	AddE(T,x, y, q, Answer);
+	cout << "Pleas Enter Answer :\n";
+	cin >> Answer;
+
+	if (q == Answer)
+	{
+		cout << "Answer Corectly -)\n";
+	}
+	else
+	{
+		cout << "Answer Not Corectly -(\n";
+		cout << "Answer Corectly  = " << q << "\n";
+
+	}
+}
+
+
+void CheckMultiplay(short x, short y, float q, short Answer)
+{
+	int T;
+	cin >> T;
+	Multiplay(T,x, y, q, Answer);
+	cout << "Pleas Enter Answer :\n";
+	cin >> Answer;
+
+	if (q == Answer)
+	{
+		cout << "Answer Corectly -)\n";
+	}
+	else
+	{
+		cout << "Answer Not Corectly -(\n";
+		cout << "Answer Corectly  = " << q << "\n";
+
+	}
+}
+
+void Collection(short x, short y, float q, short Answer)
+{
+	CheckAddE(x, y, q, Answer);
+	CheckMultiplay(x, y, q, Answer);
+	CheckDivid(x, y, q, Answer);
+
+}
+
+void LevelQuation(short Level, float x, float y, float q,short answer)
+{
+	cout << "Level Qustion :  1-Easy. 2-Medium. 3-Hard. 4-Mix\n";
+	cin >> Level;
+	TypeOperetion(Level);
+	switch (Level)
+	{
+	case enLevel::Easy:  
+		return CheckAddE(x,y,q, answer);
+	case enLevel::Medium:
+		return CheckMultiplay(x,y,q, answer);
+	case enLevel::Hard:
+		return CheckDivid(x, y, q, answer);
+	case enLevel::Mix:
+		return Collection(x, y, q, answer);
+
+	}
+
+}
+
+
+
+
+
+int main()
+{
+	srand((unsigned)time(NULL));
+
+	short En = 0,x = 0, y = 0, q = 0, Answer = 0;
+
+	
+	LevelQuation( En, x, y, q, Answer);
+
+	
+
+
+
+
+
+	return 0;
+
+
+}
+
