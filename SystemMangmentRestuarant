@@ -1,0 +1,131 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+enum EnClassify { Burger = 1 , Pasta = 2 , Pizza = 3 , Salad = 4 , Dring = 5};
+
+struct StClassify
+{
+    EnClassify classify;
+    int Quantity;
+    double Price;
+};
+
+void ShowMenu()
+{
+    cout << "          MenuItem          \n";
+    cout << "--------------------\n";
+    cout << "1.  Burger :: 15000\n";
+    cout << "2.  Pasta  :: 20000\n";
+    cout << "3.  Pizza  :: 30000\n";
+    cout << "4.  Salad  :: 15000\n";
+    cout << "5.  Drink  :: 10000\n";
+    cout << "--------------------\n";
+}
+
+
+double GetItemPrice(EnClassify Classify)
+{
+    switch (Classify)
+    {
+    case EnClassify::Burger:
+        return 15000;
+    case EnClassify::Pasta:
+        return 20000;
+    case EnClassify::Pizza:
+        return 30000;
+    case EnClassify::Salad:
+        return 15000;
+    case EnClassify::Dring:
+        return 10000;
+        default: return 0.0;
+    }
+}
+
+void AddOrder(vector<StClassify>& order, int& Choise)
+{
+    int quantity = 0;
+    do
+    {
+      /*  cout << "Please Enter Number Classify :\n";
+        cin >> Choise;*/
+
+        cout << "Please Enter The quantity :\n";
+        cin >> quantity;
+    } while (Choise <= 1 && Choise >= 5);
+
+    EnClassify SelectItem = static_cast<EnClassify>(Choise);
+    double Price = GetItemPrice(SelectItem) * quantity;
+
+    order.push_back({ SelectItem,quantity,Price });
+
+    cout << "Order added successfully!\n";
+}
+
+void AddOrder2(vector<StClassify>& order,int Choise)
+{
+    cout << "\nis Want Add Order Another ?\n";
+    bool Check = false; 
+    cin >> Check;
+    if (Check == true)
+    {
+        AddOrder(order, Choise);
+    }
+}
+
+void Removeorder(vector<StClassify>& order, int Choic = 0)
+{
+    cout << "\nPleas Choic Classify To Delet:\n";
+    cin >> Choic;
+    for (int i = 0;i < order.size(); i++)
+    {
+        if (static_cast<int> (order[i].Quantity) == Choic)
+        {
+            order.erase(order.begin() + i);
+            cout << "The request has been successfully deleted.\n";
+        }
+        else { cout << "The request was not deleted successfully.\n"; }
+    }
+}
+
+string GetNameClassify(EnClassify E)
+{
+    
+    string array[5] = { "Burger" , "Pasta" , "Pizza" , "Salad" , "Dring" };
+    return  array[E - 1];
+}
+
+void ShowOrder(vector<StClassify>& order, EnClassify E)
+{
+    cout << "\nCurrent orders :\n";
+    for (StClassify Order : order)
+    {
+        cout << "is classify : " << GetNameClassify(E) << endl << "is Quantity : " << Order.Quantity << endl << "is Price : " << Order.Price << endl;
+     //   cout << "\n\nThe Order 2 :\n\n";
+    }
+}
+
+
+
+
+int main()
+{
+    StClassify E;
+    vector<StClassify> order;
+    int Choise;
+    
+    ShowMenu();
+    cout << "Please Enter Number Classify :\n";
+    cin >> Choise;
+    AddOrder(order, Choise);
+    cout << "=============Show================\n";
+   
+
+    cout << "Number Item The Vector :" << order.size() <<endl;
+
+   
+    ShowOrder(order, static_cast<EnClassify> (Choise));
+ 
+    return 0;
+}
