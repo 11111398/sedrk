@@ -1,0 +1,124 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+
+struct StAccount
+{
+    int NumberAccount;
+    string Name;
+    double Balance;
+};
+
+
+void CreatNewAccount(vector<StAccount>& Account)
+{
+    int NumberAccount;
+    string Name;
+    double Balance;
+    cout << "Please Enter NumberAccount :\n";
+    cin >> NumberAccount;
+    cout << "Please Enter Name:\n";
+    cin >> Name;
+    cout << "Please Enter Balance:\n";
+    cin >> Balance;
+
+    if (Balance < 0)
+    {
+        cout << "Error: Balance cannot be negative!\n";
+        return;
+    }
+
+    Account.push_back({ NumberAccount,Name,Balance });
+
+    cout << "Account Created Successfully!\n";
+}
+
+StAccount DepositMoney(StAccount& A)
+{
+    //StAccount A;
+    int Deposit = 0;
+    cout << "\nPlease Enter Amount Deposit\n";
+    cin >> Deposit;
+
+    if(Deposit < 0)
+        cout << "Erorr";
+
+    A.Balance += Deposit;
+    cout << "Deposit successfully\n";
+    return A;
+}
+
+StAccount toWithdraw(StAccount& A)
+{
+    //StAccount A;
+    int Deposit = 0;
+    cout << "\nPlease Enter Amount Deposit\n";
+    cin >> Deposit;
+
+    if (Deposit < 0)
+        cout << "Erorr";
+
+    A.Balance -= Deposit;
+    cout << "Deposit successfully\n";
+    return A;
+}
+
+
+
+
+//
+//void Withdraw(StAccount& A)  
+//{
+//    int amount = 0;
+//    cout << "\nPlease Enter Amount to Withdraw:\n";
+//    cin >> amount;
+//
+//    if (amount < 0) 
+//    {
+//        cout << "Error: Withdrawal amount cannot be negative!\n";
+//        return;
+//    }
+//
+//    if (amount > A.Balance)  
+//    {
+//        cout << "Error: Insufficient balance!\n";
+//        return;
+//    }
+//
+//    A.Balance -= amount; 
+//    cout << "Withdrawal successful! New Balance: " << A.Balance << endl;
+//}
+
+
+
+
+
+
+
+
+
+int main()
+{
+    StAccount A;
+    vector<StAccount> Account;
+
+   CreatNewAccount(Account);
+
+    for (StAccount& A : Account)
+    {
+        cout << A.NumberAccount << endl << A.Name << endl << A.Balance << endl;
+    }
+
+    toWithdraw(Account[0]);
+
+    cout << "\nAfter\n";
+
+    for (StAccount& A : Account)
+    {
+        cout << A.NumberAccount << endl << A.Name << endl << A.Balance << endl;
+    }
+
+    return 0;
+}
