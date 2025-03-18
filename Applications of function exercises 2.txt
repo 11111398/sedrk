@@ -1,0 +1,137 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+using namespace std;
+
+struct StData
+{
+    string Name;
+    int NumberAccount = 0;
+};
+
+// ✅ دالة لإضافة البيانات إلى الملف و vector
+void AppendDataToFile(vector<StData>& Data) {
+    ofstream file("sedrk.txt", ios::app);
+
+    if (!file) {
+        cout << "Error opening file for writing.\n";
+        return;
+    }
+
+    StData newEntry;
+    cout << "Please enter Your Name: ";
+    cin >> newEntry.Name;
+    cout << "Please enter Your NumberAccount: ";
+    cin >> newEntry.NumberAccount;
+
+    file << newEntry.Name << " " << newEntry.NumberAccount << endl;
+    file.close();
+
+    Data.push_back(newEntry); // تحديث البيانات في الذاكرة
+
+    cout << "Data added successfully!\n";
+}
+
+// ✅ تحميل البيانات من الملف إلى vector
+void LoadData(vector<StData>& Data)
+{
+    ifstream file("sedrk.txt"); // ✅ التأكد من اسم الملف الصحيح
+    if (!file)
+    {
+        cout << "Error opening file.\n";
+        return;
+    }
+
+    StData temp;
+    while (file >> temp.Name >> temp.NumberAccount)
+        Data.push_back(temp);
+
+    file.close();
+    cout << "Data loaded successfully!\n";
+}
+
+// ✅ عرض البيانات باستخدام Range Loop
+void Display(const vector<StData>& Data)
+{
+    cout << "=============== The Data =============\n";
+    for (const auto& D : Data)
+    {
+        cout << "Name: " << D.Name << " | Account Number: " << D.NumberAccount << endl;
+    }
+}
+
+// ✅ حذف عنصر من vector + الملف
+void Remove(vector<StData>& Data)
+{
+    string targetName;
+    cout << "Please Enter the Name to Remove: ";
+    cin >> targetName;
+
+    bool found = false;
+    vector<StData> newData; // بيانات جديدة بدون العنصر المحذوف
+
+    for (const auto& D : Data)
+    {
+        if (D.Name == targetName)
+        {
+            found = true;
+            cout << "Successfully removed!\n";
+        }
+        else
+        {
+            newData.push_back(D);
+        }
+    }
+
+    if (found)
+    {
+        // ✅ تحديث الملف بالبيانات الجديدة
+        ofstream file("sedrk.txt");
+        for (const auto& D : newData)
+        {
+            file << D.Name << " " << D.NumberAccount << endl;
+        }
+        file.close();
+
+        // ✅ تحديث الـ vector
+        Data = newData;
+    }
+    else
+    {
+        cout << "The Name Not Found!\n";
+    }
+}
+
+// ✅ `main()` مع تحسينات
+int main()
+{
+    vector<StData> Data;
+    LoadData(Data); // تحميل البيانات من الملف
+
+    int choice;
+    do {
+        cout << "\n1. Add Data\n2. Display Data\n3. Remove Data\n4. Exit\n";
+        cout << "Choose an option: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            AppendDataToFile(Data);
+            break;
+        case 2:
+            Display(Data);
+            break;
+        case 3:
+            Remove(Data);
+            break;
+        case 4:
+            cout << "Exiting...\n";
+            break;
+        default:
+            cout << "Invalid choice! Try again.\n";
+        }
+    } while (choice != 4);
+
+    return 0;
+}
