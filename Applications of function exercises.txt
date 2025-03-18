@@ -1,0 +1,150 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+using namespace std;
+
+
+
+struct StData
+{
+    string Name;
+    int NumberAccount = 0;
+    
+};
+
+
+
+void AppendDataToFile() {
+    ofstream file("sedrk.text", ios::app); 
+
+    string Name;
+    int NumberAccount;
+
+    if (!file)
+    {
+        cout << "Error opening file for writing.\n";
+        return;
+    }
+
+    cout << "Please enter Your Name\n";
+    cin >> Name;
+    cout << "Please enter Your NumberAccount\n";
+    cin >> NumberAccount;
+
+    file << Name << " " << NumberAccount << endl;
+    file.close();
+
+    cout << "Data added successfully!\n";
+}
+
+
+
+void LoadData(vector<StData>& Data)
+{
+    ifstream file("sedrk.text");
+    if (!file)
+    {
+        cout << "Error\n";
+    }
+
+    string NumberAccount;
+    int Age;
+    
+    while (file >> NumberAccount >> Age)
+        Data.push_back({ NumberAccount ,Age });
+
+    file.close();
+
+    cout << "Successfully\n";
+}
+
+
+void Display(vector<StData>& Data)
+{
+    cout << "===============The Data=============\n";
+
+    for (StData& D : Data)
+    {
+        cout << D.NumberAccount << endl << D.Name << endl;
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+void Remove(vector<StData>& Data)
+{
+    ifstream file("sedrk.text");
+   ofstream temp("temp.text");
+
+    if (!file || !temp) {
+        cout << "Error opening file.\n";
+        return;
+    }
+
+    string Name;
+    cout << "Please Enter the Name to Remove: ";
+    cin >> Name;
+
+    string N;
+    bool Found = false;
+    for (StData D : Data)
+    {
+        if (D.Name == Name)
+        {
+            cout << "Successfully , Please Enter You New Name\n";
+            cin >> N;
+            temp << N;
+            Found = true;
+        }
+    }
+
+
+    file.close();
+    temp.close();
+
+
+    if (Found)
+    {
+        remove("sedrk.text");
+        rename("temp.text", "sedrk.text");
+        cout << " Successfuly Deleted\n";
+    }
+    else
+    {
+        remove("temp.txt");
+        cout << "Tne Name Not Found" << endl;
+    }
+
+
+
+}
+
+
+
+
+int main()
+{
+    vector<StData> Data;
+    string l = "sedrk.text";
+
+    AppendDataToFile();
+    LoadData(Data);
+
+    Display(Data);
+
+   // Remove(Data);
+
+   
+
+
+    return 0;
+}
