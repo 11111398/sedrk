@@ -65,7 +65,7 @@ void withdraw();
 
 
 
-int main() 
+int main()
 {
 
 
@@ -94,7 +94,7 @@ enum enMainMenueOptions
 {
     eListClients = 1, eAddNewClient = 2,
     eDeleteClient = 3, eUpdateClient = 4,
-    eFindClient = 5, eDiposit = 6 , ewithdraw = 7,
+    eFindClient = 5, eDiposit = 6, ewithdraw = 7,
     Exit = 8
 };
 
@@ -324,24 +324,30 @@ StClientData ConvertLineToRecord(string S1, string Seperator)
     return Client;
 }
 
-
 StClientData ReadClientData()
 {
     StClientData Client;
-    cout << "Enter Account Number? \n";
+
+    cout << "\nEnter Account Number? \n";
+    cin.ignore(); // 🟢 لضمان التخلص من أي محرف '\n' متبقي من إدخال سابق
     getline(cin, Client.AccountNumber);
-    cout << "Enter PinCode? ";
+
+    cout << "\nEnter PinCode?\n ";
     getline(cin, Client.PinCode);
-    cout << "Enter Name? ";
+
+    cout << "\nEnter Name? \n";
     getline(cin, Client.Name);
-    cout << "Enter Phone? ";
+
+    cout << "\nEnter Phone? \n";
     getline(cin, Client.Phone);
-    cout << "Enter AccountBalance? ";
+
+    cout << "\nEnter AccountBalance? \n";
     cin >> Client.AccountBalance;
-    cin.ignore(); // لحل مشكلة الإدخال بعد `cin`
+    cin.ignore(); // 🟢 لحذف '\n' بعد إدخال الرقم
 
     return Client;
 }
+
 
 vector<StClientData> LoadCleintsDataFromFile(string Filename)
 {
@@ -578,7 +584,7 @@ void Diposit()
     cout << "\nPlease Enter AccountNumber\n";
     cin >> AccountNumber;
 
-    for (StClientData & C : DipClient)
+    for (StClientData& C : DipClient)
     {
         if (C.AccountNumber == AccountNumber)
         {
@@ -597,7 +603,7 @@ void Diposit()
         }
 
     }
-  
+
 }
 
 
@@ -630,7 +636,7 @@ void withdraw()
                     cout << " your can Not withdraw\n";
                     return;
                 }
-              
+
                 C.AccountBalance -= Dip;
             }
             SaveCleintsDataToFile(ClientsFileName, DipClient);
@@ -640,5 +646,3 @@ void withdraw()
     }
 
 }
-
-
